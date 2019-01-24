@@ -1,6 +1,6 @@
 {
   "name": "@kalacs/schematics",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Schematics for Nest js",
   "main": "index.js",
   "publishConfig": {
