@@ -19,9 +19,9 @@ import {
 } from './dto/<%= dasherize(name) %>.dto';
 
 @ApiBearerAuth()
-@ApiUseTags('<%= dasherize(name) %>')
-@Controller('<%= dasherize(name) %>')
-export class <%= classify(name) %>Controller {
+@ApiUseTags('<%= dasherize(pluralize(name)) %>')
+@Controller('<%= dasherize(pluralize(name)) %>')
+export class <%= classify(pluralize(name)) %>Controller {
 
   @Post()
   @ApiOperation({ title: 'Create <%= dasherize(name) %>' })

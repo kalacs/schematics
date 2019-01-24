@@ -11,6 +11,14 @@ import {
   Tree,
   url,
 } from '@angular-devkit/schematics';
+import { pluralize } from 'inflection';
+import {
+  attributesToDeclaration,
+  dtoAttributeDecorator,
+  getDecoratorSet,
+  parseAttributeString,
+  toDecorator,
+} from '../../utils/attributes';
 import {
   DeclarationOptions,
   ModuleDeclarator,
@@ -34,14 +42,17 @@ export function main(options: ModuleOptions): Rule {
 }
 
 function transform(source: ModuleOptions): ModuleOptions {
-  const target: ModuleOptions = Object.assign({}, source);
+  const target: any = Object.assign({}, source);
   target.metadata = 'imports';
   target.type = 'module';
 
   const location: Location = new NameParser().parse(target);
   target.name = strings.dasherize(location.name);
-  target.path = join(strings.dasherize(location.path) as Path, target.name);
+  target.path = join(strings.dasherize(location.path) as Path, pluralize(target.name));
   target.language = target.language !== undefined ? target.language : 'ts';
+  target.attributes = parseAttributeString(source.attributes);
+  target.decorators = getDecoratorSet(target.attributes);
+  console.log(target);
   return target;
 }
 
@@ -51,6 +62,12 @@ function generate(options: ModuleOptions) {
       template({
         ...strings,
         ...options,
+        ...{
+          toDecorator,
+          attributesToDeclaration,
+          dtoAttributeDecorator,
+          pluralize
+        }
       }),
       move(options.path),
     ])(context);

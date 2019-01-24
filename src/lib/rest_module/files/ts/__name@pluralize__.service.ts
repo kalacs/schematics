@@ -1,4 +1,4 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class <%= classify(name) %>Service {}
+export class <%= classify(pluralize(name)) %>Service {}

@@ -1,14 +1,10 @@
-import { IsString, IsInt } from 'class-validator';
+import {<%="\n  " + decorators.join(",\n  ") + ",\n" %>} from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class Create<%= classify(name) %>Dto {
-  @ApiModelProperty()
-  @IsString()
-  readonly name: string;
+<%= attributesToDeclaration(attributes, dtoAttributeDecorator)%>
 }
 
 export class Update<%= classify(name) %>Dto {
-    @ApiModelProperty()
-    @IsString()
-    readonly name: string;
-  }
+<%= attributesToDeclaration(attributes, dtoAttributeDecorator)%>
+}

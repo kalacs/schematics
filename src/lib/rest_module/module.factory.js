@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular-devkit/core");
 const schematics_1 = require("@angular-devkit/schematics");
+const inflection_1 = require("inflection");
+const attributes_1 = require("../../utils/attributes");
 const module_declarator_1 = require("../../utils/module.declarator");
 const module_finder_1 = require("../../utils/module.finder");
 const name_parser_1 = require("../../utils/name.parser");
@@ -23,13 +25,21 @@ function transform(source) {
     target.type = 'module';
     const location = new name_parser_1.NameParser().parse(target);
     target.name = core_1.strings.dasherize(location.name);
-    target.path = core_1.join(core_1.strings.dasherize(location.path), target.name);
+    target.path = core_1.join(core_1.strings.dasherize(location.path), inflection_1.pluralize(target.name));
     target.language = target.language !== undefined ? target.language : 'ts';
+    target.attributes = attributes_1.parseAttributeString(source.attributes);
+    target.decorators = attributes_1.getDecoratorSet(target.attributes);
+    console.log(target);
     return target;
 }
 function generate(options) {
     return (context) => schematics_1.apply(schematics_1.url(core_1.join('./files', options.language)), [
-        schematics_1.template(Object.assign({}, core_1.strings, options)),
+        schematics_1.template(Object.assign({}, core_1.strings, options, {
+            toDecorator: attributes_1.toDecorator,
+            attributesToDeclaration: attributes_1.attributesToDeclaration,
+            dtoAttributeDecorator: attributes_1.dtoAttributeDecorator,
+            pluralize: inflection_1.pluralize
+        })),
         schematics_1.move(options.path),
     ])(context);
 }

@@ -1,10 +1,15 @@
 import { Path } from '@angular-devkit/core';
+import { Empty } from '@angular-devkit/core/src/virtual-fs/host';
 
 export interface ModuleOptions {
   /**
    * The name of the module.
    */
   name: string;
+  /**
+   * The path to create the module.
+   */
+  attributes?: string;
   /**
    * The path to create the module.
    */
@@ -33,4 +38,5 @@ export interface ModuleOptions {
    * The source root path
    */
   sourceRoot?: string;
+//  decorators: Array<string | Empty>;
 }
