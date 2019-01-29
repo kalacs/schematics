@@ -37,10 +37,13 @@ exports.attributesToDeclaration = (attributes, mapFunction = exports.interfaceAt
 ], []).join("\n\n");
 const pipe = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
 const pipeMap = (...fns) => x => fns.map(f => f(x));
-exports.transformAttributeToDeclaration = ({ attribute, type, decorators }) => exports.tabulate()(`readonly ${attribute}: ${type};`);
+exports.transformAttributeToDeclaration = ({ attribute, type, }) => exports.tabulate()(`readonly ${attribute}: ${type};`);
+exports.transformAttributeToSchema = ({ attribute, type, }) => exports.tabulate()(`${attribute}: ${exports.capitalizeFirstLetter(type)},`);
 exports.addSwaggerDecorator = data => exports.tabulate()('@ApiModelProperty()');
 const createArray = (size) => new Array(size).fill(' ');
 exports.tabulate = (tabSize = 2) => (value) => `${createArray(tabSize).join('')}${value}`;
 exports.addClassValidatorDecorators = ({ decorators }) => decorators.map(exports.toDecorator).map(exports.tabulate()).join("\n");
 exports.dtoAttributeDecorator = pipeMap(exports.addSwaggerDecorator, exports.addClassValidatorDecorators, exports.transformAttributeToDeclaration);
 exports.interfaceAttributeDecorator = pipeMap(exports.transformAttributeToDeclaration);
+exports.mongooseSchemaAttributeDecorator = pipeMap(exports.transformAttributeToSchema);
+exports.capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);

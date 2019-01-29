@@ -11,10 +11,13 @@ export declare const attributesToDeclaration: (attributes: Map<string, {
     type: string;
     decorators: [];
 }>, mapFunction?: (x: any) => any[]) => string;
-export declare const transformAttributeToDeclaration: ({ attribute, type, decorators }: {
+export declare const transformAttributeToDeclaration: ({ attribute, type, }: {
     attribute: any;
     type: any;
-    decorators: any;
+}) => string;
+export declare const transformAttributeToSchema: ({ attribute, type, }: {
+    attribute: any;
+    type: any;
 }) => string;
 export declare const addSwaggerDecorator: (data: any) => string;
 export declare const tabulate: (tabSize?: number) => (value: string) => string;
@@ -23,3 +26,5 @@ export declare const addClassValidatorDecorators: ({ decorators }: {
 }) => any;
 export declare const dtoAttributeDecorator: (x: any) => any[];
 export declare const interfaceAttributeDecorator: (x: any) => any[];
+export declare const mongooseSchemaAttributeDecorator: (x: any) => any[];
+export declare const capitalizeFirstLetter: (string: any) => any;

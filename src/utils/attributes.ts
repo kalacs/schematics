@@ -52,8 +52,11 @@ const pipeMap = (...fns) => x => fns.map(f => f(x));
 export const transformAttributeToDeclaration = ({
     attribute,
     type,
-    decorators
 }) => tabulate()(`readonly ${attribute}: ${type};`);
+export const transformAttributeToSchema = ({
+    attribute,
+    type,
+}) => tabulate()(`${attribute}: ${capitalizeFirstLetter(type)},`);
 export const addSwaggerDecorator = data => tabulate()('@ApiModelProperty()');
 const createArray = (size: number) => new Array(size).fill(' ');
 export const tabulate = (tabSize = 2) => (value: string) => `${createArray(tabSize).join('')}${value}`;
@@ -66,3 +69,7 @@ export const dtoAttributeDecorator = pipeMap(
 export const interfaceAttributeDecorator = pipeMap(
     transformAttributeToDeclaration
 );
+export const mongooseSchemaAttributeDecorator = pipeMap(
+    transformAttributeToSchema
+);
+export const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);

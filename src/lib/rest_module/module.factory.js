@@ -29,7 +29,6 @@ function transform(source) {
     target.language = target.language !== undefined ? target.language : 'ts';
     target.attributes = attributes_1.parseAttributeString(source.attributes);
     target.decorators = attributes_1.getDecoratorSet(target.attributes);
-    console.log(target);
     return target;
 }
 function generate(options) {
@@ -38,6 +37,7 @@ function generate(options) {
             toDecorator: attributes_1.toDecorator,
             attributesToDeclaration: attributes_1.attributesToDeclaration,
             dtoAttributeDecorator: attributes_1.dtoAttributeDecorator,
+            mongooseSchemaAttributeDecorator: attributes_1.mongooseSchemaAttributeDecorator,
             pluralize: inflection_1.pluralize
         })),
         schematics_1.move(options.path),

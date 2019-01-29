@@ -1,11 +1,14 @@
 import {
-    Controller,
-    Get,
-    Post,
-    Body,
-    Put,
-    Param,
-    Delete
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseInterceptors,
+  Put,
+  Delete,
+  UseGuards,
 } from '@nestjs/common';
 import {
     ApiBearerAuth,
@@ -13,15 +16,19 @@ import {
     ApiResponse,
     ApiUseTags,
 } from '@nestjs/swagger';
-import {
-    Create<%= classify(name) %>Dto,
-    Update<%= classify(name) %>Dto
-} from './dto/<%= dasherize(name) %>.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { <%= classify(pluralize(name)) %>Service } from './<%=pluralize(name)%>.service';
+import { Create<%= classify(name) %>Dto } from './dto/create-<%=dasherize(name)%>.dto';
+import { Update<%= classify(name) %>Dto } from './dto/update-<%=dasherize(name)%>.dto';
+import { <%= classify(name) %> } from './interfaces/<%=dasherize(name)%>.interface';
+import { RESTQueryDto } from './dto/rest-query.dto';
+import { PaginationInterceptor } from '../common/interceptors/pagination.interceptor';
 
 @ApiBearerAuth()
 @ApiUseTags('<%= dasherize(pluralize(name)) %>')
 @Controller('<%= dasherize(pluralize(name)) %>')
 export class <%= classify(pluralize(name)) %>Controller {
+  constructor(private readonly <%= camelize(pluralize(name)) %>Service: <%= classify(pluralize(name)) %>Service) {}
 
   @Post()
   @ApiOperation({ title: 'Create <%= dasherize(name) %>' })
@@ -30,27 +37,37 @@ export class <%= classify(pluralize(name)) %>Controller {
     description: 'The record has been successfully created.',
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
-	create(@Body() create<%= classify(name) %>Dto: Create<%= classify(name) %>Dto) {
-    return 'This action adds a new cat';
+  @UseGuards(AuthGuard())
+  async create(@Body() createDto: Create<%= classify(name) %>Dto): Promise<<%= classify(name) %>> {
+    return await this.<%= camelize(pluralize(name)) %>Service.create(createDto);
   }
 
   @Get()
-  findAll(@Query() query) {
-    return `This action returns all cats (limit: ${query.limit} items)`;
+  @ApiOperation({ title: 'List <%= dasherize(name) %> objects' })
+  @UseInterceptors(PaginationInterceptor)
+  @UseGuards(AuthGuard())
+  async findAll(@Query() query: RESTQueryDto): Promise<any> {
+    return await this.<%= camelize(pluralize(name)) %>Service.findAndCountAll(query);
   }
 
   @Get(':id')
-  findOne(@Param('id') id) {
-    return `This action returns a #${id} cat`;
+  @ApiOperation({ title: 'Get one <%= dasherize(name) %>' })
+  @UseGuards(AuthGuard())
+  async findOne(@Param('id') id: string): Promise<<%= classify(name) %>> {
+    return await this.<%= camelize(pluralize(name)) %>Service.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('id') id, @Body() update<%= classify(name) %>Dto: Update<%= classify(name) %>Dto) {
-    return `This action updates a #${id} cat`;
+  @ApiOperation({ title: 'Update <%= dasherize(name) %>' })
+  @UseGuards(AuthGuard())
+  async update(@Param('id') id: string, @Body() updateDto: Update<%= classify(name) %>Dto): Promise<<%= classify(name) %>> {
+    return await this.<%= camelize(pluralize(name)) %>Service.updateById(id, updateDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id) {
-    return `This action removes a #${id} cat`;
+  @ApiOperation({ title: 'Delete <%= dasherize(name) %>' })
+  @UseGuards(AuthGuard())
+  async remove(@Param('id') id: string): Promise<<%= classify(name) %>> {
+    return await this.<%= camelize(pluralize(name)) %>Service.removeById(id);
   }
 }

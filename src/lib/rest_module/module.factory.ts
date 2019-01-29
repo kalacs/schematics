@@ -16,6 +16,7 @@ import {
   attributesToDeclaration,
   dtoAttributeDecorator,
   getDecoratorSet,
+  mongooseSchemaAttributeDecorator,
   parseAttributeString,
   toDecorator,
 } from '../../utils/attributes';
@@ -52,7 +53,6 @@ function transform(source: ModuleOptions): ModuleOptions {
   target.language = target.language !== undefined ? target.language : 'ts';
   target.attributes = parseAttributeString(source.attributes);
   target.decorators = getDecoratorSet(target.attributes);
-  console.log(target);
   return target;
 }
 
@@ -66,6 +66,7 @@ function generate(options: ModuleOptions) {
           toDecorator,
           attributesToDeclaration,
           dtoAttributeDecorator,
+          mongooseSchemaAttributeDecorator,
           pluralize
         }
       }),
