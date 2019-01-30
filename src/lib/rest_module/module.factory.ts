@@ -76,17 +76,22 @@ function generate(options: ModuleOptions) {
 
 function addDeclarationToModule(options: ModuleOptions): Rule {
   return (tree: Tree) => {
+
     if (options.skipImport !== undefined && options.skipImport) {
       return tree;
     }
+
     options.module = new ModuleFinder(tree).find({
       name: options.name,
       path: options.path as Path,
     });
+
     if (!options.module) {
       return tree;
     }
     const content = tree.read(options.module).toString();
+    options.name = pluralize(options.name);
+
     const declarator: ModuleDeclarator = new ModuleDeclarator();
     tree.overwrite(
       options.module,

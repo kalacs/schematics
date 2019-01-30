@@ -43,7 +43,6 @@ export class <%= classify(pluralize(name)) %>Service {
       .then(([ data, count]) => ({ data, count}));
   }
 
-  updateById = async (id: string, entity: Update<%= classify(name) %>Dto) => await this.model.findByIdAndUpdate(id, entity, { new: true });
-
+  updateById = async (id: string, entity: Update<%= classify(name) %>Dto) => await this.model.findOneAndUpdate({_id: id }, entity);
   removeById = async (id: string) => await this.model.findByIdAndRemove(id);
 }

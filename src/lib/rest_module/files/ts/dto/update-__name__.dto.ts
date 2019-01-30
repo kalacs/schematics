@@ -1,6 +1,3 @@
-import {<%="\n  " + decorators.join(",\n  ") + ",\n" %>} from 'class-validator';
-import { ApiModelProperty } from '@nestjs/swagger';
+import { Create<%= classify(name) %>Dto } from './create-<%= dasherize(name) %>.dto';
 
-export class Update<%= classify(name) %>Dto {
-<%= attributesToDeclaration(attributes, dtoAttributeDecorator)%>
-}
+export class Update<%= classify(name) %>Dto extends Create<%= classify(name) %>Dto {}

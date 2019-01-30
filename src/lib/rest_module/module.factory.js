@@ -56,6 +56,7 @@ function addDeclarationToModule(options) {
             return tree;
         }
         const content = tree.read(options.module).toString();
+        options.name = inflection_1.pluralize(options.name);
         const declarator = new module_declarator_1.ModuleDeclarator();
         tree.overwrite(options.module, declarator.declare(content, options));
         return tree;
