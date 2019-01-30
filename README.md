@@ -6,10 +6,19 @@ In order to help people manage their projects, the CLI tool has been created. It
 
 
 ## Installation
+
+### Requirement:
+
+It has to be installed `@angular-devkit/schematics-cli` package:
+
+```
+npm install -g @angular-devkit/schematics-cli
+```
+
 ### NPM:
 
 ```
-$ npm install -g @kalacs/schematics
+npm install -g @kalacs/schematics
 ```
 
 ## Usage
